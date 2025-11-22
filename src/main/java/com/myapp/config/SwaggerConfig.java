@@ -24,11 +24,11 @@ public class SwaggerConfig {
                                 .email("support@myapp.com")))
                 .servers(List.of(
                         new Server()
+                                .url("http://myapp-alb-1748281401.ap-northeast-2.elb.amazonaws.com")
+                                .description("AWS ALB Server"),
+                        new Server()
                                 .url("http://localhost:8080")
                                 .description("Local Development Server"),
-                        new Server()
-                                .url("http://myapp-alb-1781567144.ap-northeast-2.elb.amazonaws.com")
-                                .description("AWS ALB Server"),
                         new Server()
                                 .url("https://api.myapp.com")
                                 .description("Production Server")
