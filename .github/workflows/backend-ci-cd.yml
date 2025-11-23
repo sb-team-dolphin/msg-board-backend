@@ -30,6 +30,38 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Notify pipeline start
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*🚀 CI/CD Pipeline Started* by ${{ github.actor }}\n⬜️⬜️⬜️⬜️ Building and Testing..."
+                }
+              },
+              {
+                "type": "image",
+                "image_url": "https://38.media.tumblr.com/f36cd9a0381bad952ddd723a5dcac451/tumblr_nf5sk5Mn7d1u3w4uoo1_400.gif",
+                "alt_text": "pipeline start"
+              },
+              {
+                "type": "context",
+                "elements": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "Branch: `${{ github.ref_name }}` | Commit: `${{ github.sha }}`\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Logs>"
+                  }
+                ]
+              }
+            ]
+          }' \
+          $SLACK_WEBHOOK_URL || true
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
